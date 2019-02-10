@@ -1,0 +1,16 @@
+# AppVeyor configuration for automatic Windows build of Adiantum benchmark
+image: Visual Studio 2017
+
+only_commits:
+  files:
+    - benchmark/      # only run AppVeyor if benchmark folder is changed
+
+install:
+  - cd benchmark
+  - set PATH=%PATH%;C:\Python37-x64\Scripts;%APPVEYOR_BUILD_FOLDER%;%CD%
+  - choco install ninja
+  - pip3 install meson
+
+build_script:
+  - meson build --buildtype release --default-library static
+  - ninja build
